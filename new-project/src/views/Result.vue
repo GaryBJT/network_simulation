@@ -12,7 +12,11 @@
       <el-container>
         <el-aside width="200px" >
         <div class="comprehensive" @click="showresult">综合指标分析</div>
-        <el-collapse >
+        <div class="comprehensive" @click="showlostPacket">丢包率</div>
+        <div class="comprehensive" @click="showresult">吞吐量</div>
+        <div class="comprehensive" @click="showresult">时延</div>
+        <div class="comprehensive" @click="showresult">抖动</div>
+        <!-- <el-collapse >
           <el-collapse-item v-for="(items, index) in menuData" :key="items.label" :index="items.label"
               :title="items.label" :name="items.label">
               <div v-for="item in items.children" style="text-align: center;" >
@@ -35,10 +39,10 @@
               </div>
               </div>
             </el-collapse-item>
-        </el-collapse>
+        </el-collapse> -->
         </el-aside>
         <el-main>
-          <div class="common-tabel">
+          <div class="common-tabel" ref="lostPacket" style="width: 900px; height: 420px;">
           <el-table 
           :data="resultdata" 
           style="width: 100%" 
@@ -72,7 +76,6 @@
           >
         </el-table-column>
           </el-table>
-        
         </div>
         </el-main>
     </el-container>
@@ -81,6 +84,7 @@
 </template>
 
 <script>
+import * as echarts from 'echarts';
 export default {
   data() {
     return {
@@ -89,6 +93,7 @@ export default {
       tableData:[],
       resultdata:[],
       headervisible:false,
+      
     }
   },
 
@@ -121,7 +126,29 @@ export default {
   methods: {
     showresult(){
       this.headervisible=true
-
+      // echartsInstance.dispose()
+    },
+    showlostPacket(){
+      // console.log(this.$refs.lostPacket)
+      const mylostPacket=echarts.init(this.$refs.lostPacket)
+      const option = {
+        xAxis: {
+          type: 'category',
+          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            data: [150, 230, 224, 218, 135, 147, 260],
+            type: 'line'
+          }
+        ]
+      };
+      option && mylostPacket.setOption(option);
+      
+      
     }
   }
 }
