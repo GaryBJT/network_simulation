@@ -13,9 +13,9 @@
         <el-aside width="200px" >
         <div class="comprehensive" @click="showresult">综合指标分析</div>
         <div class="comprehensive" @click="showlostPacket">丢包率</div>
-        <div class="comprehensive" @click="showresult">吞吐量</div>
-        <div class="comprehensive" @click="showresult">时延</div>
-        <div class="comprehensive" @click="showresult">抖动</div>
+        <div class="comprehensive" @click="showtuntu">吞吐量</div>
+        <div class="comprehensive" @click="showdelay">时延</div>
+        <div class="comprehensive" @click="showfliter">抖动</div>
         <!-- <el-collapse >
           <el-collapse-item v-for="(items, index) in menuData" :key="items.label" :index="items.label"
               :title="items.label" :name="items.label">
@@ -42,7 +42,8 @@
         </el-collapse> -->
         </el-aside>
         <el-main>
-          <div class="common-tabel" ref="lostPacket" style="width: 900px; height: 420px;">
+          <div v-show="displayPicture" class="common-tabel" ref="lostPacket" style="width: 900px; height: 420px;">
+          </div>
           <el-table 
           :data="resultdata" 
           style="width: 100%" 
@@ -58,25 +59,25 @@
           >
         </el-table-column>
           <el-table-column
-            label="平均吞吐量(bps)"
-            prop="平均吞吐量(bps)"
+            label="平均吞吐量(Mbps)"
+            prop="平均吞吐量(Mbps)"
             v-if="headervisible"
           >
         </el-table-column>
           <el-table-column
-            label="平均抖动(秒)"
-            prop="平均抖动(秒)"
+            label="平均抖动(ms)"
+            prop="平均抖动(ms)"
             v-if="headervisible"
           >
         </el-table-column>
           <el-table-column
-            label="平均时延(秒)"
-            prop="平均时延(秒)"
+            label="平均时延(ms)"
+            prop="平均时延(ms)"
             v-if="headervisible"
           >
         </el-table-column>
           </el-table>
-        </div>
+
         </el-main>
     </el-container>
     </el-card>
@@ -93,6 +94,8 @@ export default {
       tableData:[],
       resultdata:[],
       headervisible:false,
+      myecharts:null,
+      displayPicture:false,
       
     }
   },
@@ -102,6 +105,7 @@ export default {
   },
   mounted(){
     window.vue=this
+    
     // this.receivedata=JSON.parse(sessionStorage.getItem('key'))
     // for(let i=0;i<this.receivedata.length;i++){
     //     if(this.receivedata[i].label === '节点模型'){
@@ -110,7 +114,15 @@ export default {
     //       this.tableData.push(this.receivedata[i])
     //     }
     //   }
-    this.resultdata.push(JSON.parse(sessionStorage.getItem('result')))
+
+    // this.resultdata.push(JSON.parse(sessionStorage.getItem('result')))
+    const temp={
+      '丢包率':0,
+      "平均吞吐量(Mbps)":52.70,
+      "平均抖动(ms)":0,
+      "平均时延(ms)":2.43,
+    }
+    this.resultdata.push(temp)
     // for (let item in data) {
     //   if (data.hasOwnProperty(item)) {
     //     const temp={
@@ -120,36 +132,149 @@ export default {
     //     this.resultdata.push(temp)
     //   }
     // }
-    console.log(this.resultdata);
-    
+    // console.log(this.resultdata);
+    this.myecharts=echarts.init(this.$refs.lostPacket)
   },
   methods: {
     showresult(){
       this.headervisible=true
-      // echartsInstance.dispose()
+      this.displayPicture=false
+      // if(this.myecharts !== null){
+      //   this.myecharts.clear()
+      //   console.log(this.myecharts);
+      // }      
     },
     showlostPacket(){
       // console.log(this.$refs.lostPacket)
-      const mylostPacket=echarts.init(this.$refs.lostPacket)
+      this.displayPicture=true
+      this.headervisible=false
+
       const option = {
+        title: {
+          text: '丢包率'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
         xAxis: {
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+          data: ['1', '2', '3', '4', '5', '6', '7']
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
+          axisLabel: {
+          formatter: '{value} %'
+        }
+        },
+        legend: {
+          data: ['lostPacket']
         },
         series: [
           {
-            data: [150, 230, 224, 218, 135, 147, 260],
+            name:'lostPacket',
+            data: [0.082, 0.165, 0.041, 0.124, 0.082, 0.041, 0.165],
             type: 'line'
           }
         ]
       };
-      option && mylostPacket.setOption(option);
+      option && this.myecharts.setOption(option);
       
       
-    }
+    },
+    showtuntu(){
+
+      const option = {
+        title: {
+          text: '吞吐量'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        xAxis: {
+          type: 'category',
+          data: ['1', '2', '3', '4', '5', '6', '7']
+        },
+        legend: {
+          data: ['tuntu']
+        },
+        yAxis: {
+          type: 'value',
+          axisLabel: {
+          formatter: '{value} Mbps'
+        }
+        },
+        series: [
+          { name:'tuntu',
+            data: [52.3, 48.7, 57.1, 53.5, 49.9, 58.3, 49.1],
+            type: 'line'
+          }
+        ]
+      };
+      option && this.myecharts.setOption(option);
+    },
+    showdelay(){
+      const option = {
+        title: {
+          text: '时延'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        xAxis: {
+          type: 'category',
+          data: ['1', '2', '3', '4', '5', '6', '7']
+        },
+        yAxis: {
+          type: 'value',
+          axisLabel: {
+          formatter: '{value} ms'
+        }
+        },
+        legend: {
+          data: ['delay']
+        },
+        series: [
+          {
+            name: 'delay',
+            stack: 'Total',
+            data: [2.16, 1.86, 3.30, 2.58, 1.96, 2.78, 2.37],
+            type: 'line'
+          }
+        ]
+      };
+      option && this.myecharts.setOption(option);
+    },
+    showfliter(){
+      const option = {
+        title: {
+          text: '抖动'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: ['fliter']
+        },
+        xAxis: {
+          type: 'category',
+          data: ['1', '2', '3', '4', '5', '6', '7']
+        },
+        yAxis: {
+          type: 'value',
+          axisLabel: {
+          formatter: '{value} ms'
+        }
+        },
+        series: [
+          {
+            name:'fliter',
+            data: [1.5, -1.5, 2.8, -2.8, 0.7, -0.3, -0.4],
+            type: 'line'
+          }
+        ]
+      };
+      option && this.myecharts.setOption(option);
+    },
   }
 }
 </script>
