@@ -49,7 +49,7 @@
           <el-form-item prop="application" label="应用程序">
             <!-- <el-input  v-model="form.application"></el-input> -->
             <el-select v-model="form.application">
-              <el-option v-for="item in appchoose" :label="item" :value="item"></el-option> 
+              <el-option v-for="(item,index) in appchoose" :label="item" :value="item" :key="index"></el-option> 
             </el-select>
           </el-form-item>
           <!-- <el-form-item label="网络设备">
@@ -57,22 +57,25 @@
           </el-form-item> -->
           <el-form-item prop="potocal" label="协议栈">
             <el-select v-model="form.potocal">
-              <el-option v-for="item in netchoose" :label="item" :value="item"></el-option> 
+              <el-option v-for="(item,index) in netchoose" :label="item" :value="item" :key="index"></el-option> 
             </el-select>
           </el-form-item>
           <el-form-item prop="DataRate" label="数据传输速率">
             <el-input  v-model="form.DataRate"></el-input>
           </el-form-item>
-  
           <!-- 下拉选择框  -->
           <el-form-item prop="type" label="模型类型">
             <el-select v-model="form.type">
               <!-- <el-option label="男" :value="1"></el-option> 
               <el-option label="女" :value="0"></el-option>  -->
-              <el-option v-for="item in menuData" :label="item.label" :value="item.label"></el-option> 
+              <el-option v-for="(item,index) in menuData" v-if="index >= 0 && index <= 2"  :key="index" :label="item.label" :value="item.label"></el-option> 
             </el-select>
           </el-form-item>
-  
+          <el-form-item prop="icon" label="模型图标">
+            <el-select v-model="form.icon">
+              <el-option v-for="(item,index) in nodeicon" :label="item.cn" :value="item.en" :key="index"></el-option> 
+            </el-select>
+          </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="cancel">取 消</el-button>
@@ -106,12 +109,7 @@
           </el-form-item>
 
 
-          <el-form-item prop="type" label="模型类型">
-            <el-select v-model="form.type">
 
-              <el-option v-for="item in menuData" :label="item.label" :value="item.label"></el-option> 
-            </el-select>
-          </el-form-item>
           
 
           <el-form-item prop="type" label="IP路由协议">
@@ -159,21 +157,29 @@
           <el-form-item prop="label" label="名称">
             <el-input  v-model="linkform.label"></el-input>
           </el-form-item>
+
           <el-form-item prop="channeltype" label="协议类型">
             <el-select v-model="linkform.channeltype">
-              <el-option v-for="item in linkchoose" :label="item" :value="item"></el-option> 
+              <el-option v-for="(item,index) in linkchoose" :label="item" :value="item" :key="index"></el-option> 
             </el-select>
           </el-form-item>
 
           <el-form-item prop="delay" label="时延">
             <el-input  v-model="linkform.delay"></el-input>
           </el-form-item>
+
           <!-- 下拉选择框  -->
           <el-form-item prop="type" label="模型类型">
             <el-select v-model="linkform.type">
               <!-- <el-option label="男" :value="1"></el-option> 
               <el-option label="女" :value="0"></el-option>  -->
-              <el-option v-for="item in menuData" :label="item.label" :value="item.label"></el-option> 
+              <el-option v-for="(item,index) in linkicon" :label="item.cn" :value="item.cn" :key="index"></el-option> 
+            </el-select>
+          </el-form-item>
+
+          <el-form-item prop="icon" label="模型图标">
+            <el-select v-model="linkform.icon">
+              <el-option v-for="(item,index) in linkicon" :label="item.cn" :value="item.en" :key="index"></el-option> 
             </el-select>
           </el-form-item>
         </el-form>
@@ -203,7 +209,7 @@
             <el-select v-model="userForm.type" >
               <!-- <el-option label="男" :value="1"></el-option> 
               <el-option label="女" :value="0"></el-option>  -->
-              <el-option v-for="item in menuData" :label="item.label" :value="item.label"></el-option> 
+              <el-option v-for="(item,index) in firstmenu" :label="item" :value="item" :key="index"></el-option> 
             </el-select>
           </el-form-item>
         </el-form>
@@ -284,40 +290,9 @@
                         { prop: 'potocal', label: '协议栈' },
                   ],
         menuData: [
-          // {
-          //   label: '节点模型',
-          //   icon: 'exchange2',
-          //   column:[ 
-          // // 默认表头
-          // { prop:"label",label:"名称" },
-          // { prop:"type",label:"类型名" },
-          // { prop: 'application', label: '应用程序' },
-          // { prop: 'potocal', label: '协议栈' },
-          //   ],
-          //   children: [
-          //     {
-          //       type: '节点模型',
-          //       label: 'node0',
-          //       application:'serverApps',
-          //       potocal:'Udp',
-          //       DataRate:'5Mbps',
-          //       ID:'124s8s',
-          //       icon: 'el-icon-s-data',
-          //       name:0
-          //     },
-          //     {
-          //       type: '节点模型',
-          //       label: 'node1',
-          //       application:'clienApps',
-          //       potocal:'Udp',
-          //       DataRate:'5Mbps',
-          //       ID:'1wed8s',
-          //       icon: 'el-icon-s-platform',
-          //       name:1
-          //     }
-          //   ]
-          // },
+
           {
+            type: '节点模型',
             label: '交换机',
             icon: 'exchange2',
             column:[ 
@@ -335,7 +310,7 @@
                 potocal:'Udp',
                 DataRate:'5Mbps',
                 // ID:'124s8s',
-                icon: 'el-icon-s-data',
+                icon: 'el-icon-s-tools',
                 name:0
               },
               {
@@ -345,12 +320,45 @@
                 potocal:'Udp',
                 DataRate:'5Mbps',
                 // ID:'1wed8s',
-                icon: 'el-icon-s-platform',
+                icon: 'el-icon-s-tools',
                 name:1
-              }
+              },
+              //test
+              {
+                type: '交换机',
+                label: '锐捷网络RG-NBS3100-24GT4SFP',
+                application:'clienApps',
+                potocal:'Udp',
+                DataRate:'5Mbps',
+                // ID:'1wed8s',
+                icon: 'el-icon-s-tools',
+                name:2
+              },
+              {
+                type: '交换机',
+                label: '华为S2408',
+                application:'serverApps',
+                potocal:'Udp',
+                DataRate:'5Mbps',
+                // ID:'1wed8s',
+                icon: 'el-icon-s-tools',
+                name:3
+              },
+              {
+                type: '交换机',
+                label: 'ZXR10 8902E',
+                application:'clienApps',
+                potocal:'Udp',
+                DataRate:'5Mbps',
+                // ID:'1wed8s',
+                icon: 'el-icon-s-tools',
+                name:4
+              },
+
             ]
           },
           {
+            type: '节点模型',
             label: '路由器',
             icon: 'router',
             column:[ 
@@ -368,7 +376,7 @@
                 potocal:'Udp',
                 DataRate:'5Mbps',
                 // ID:'124s8s',
-                icon: 'el-icon-s-data',
+                icon: 'el-icon-bangzhu',
                 name:0
               },
               {
@@ -378,12 +386,43 @@
                 potocal:'Udp',
                 DataRate:'5Mbps',
                 // ID:'1wed8s',
-                icon: 'el-icon-s-platform',
+                icon: 'el-icon-bangzhu',
                 name:1
-              }
+              },
+              {
+                type: '路由器',
+                label: '海康威视DS-3WR12-E',
+                application:'clienApps',
+                potocal:'Udp',
+                DataRate:'5Mbps',
+                // ID:'1wed8s',
+                icon: 'el-icon-bangzhu',
+                name:2
+              },
+              {
+                type: '路由器',
+                label: '华为AR6121EC-S',
+                application:'clienApps',
+                potocal:'Udp',
+                DataRate:'5Mbps',
+                // ID:'1wed8s',
+                icon: 'el-icon-bangzhu',
+                name:3
+              },
+              {
+                type: '路由器',
+                label: 'H3C ER5200G3',
+                application:'clienApps',
+                potocal:'Udp',
+                DataRate:'5Mbps',
+                // ID:'1wed8s',
+                icon: 'el-icon-bangzhu',
+                name:4
+              },
             ]
           },
           {
+            type: '节点模型',
             label: '移动终端',
             icon: 'move',
             column:[ 
@@ -411,12 +450,13 @@
                 potocal:'Udp',
                 DataRate:'5Mbps',
                 // ID:'1wed8s',
-                icon: 'el-icon-s-platform',
+                icon: 'el-icon-mobile-phone',
                 name:1
               }
             ]
           },
           {
+            type: '链路模型',
             label: '无线链路',
             icon: 'stick',
             column:[ 
@@ -434,7 +474,7 @@
                 channeltype:'pointTopoint',
                 delay:'2ms',
                 // ID:'89ss47'
-                icon: 'el-icon-share'
+                icon: 'el-icon-data-analysis'
               },
               {
   
@@ -443,11 +483,12 @@
                 channeltype:'pointTopoint',
                 delay:'2ms',
                 // ID:'7777qw',
-                icon: 'el-icon-share'
+                icon: 'el-icon-data-analysis'
               }
             ]
           },
           {
+            type: '链路模型',
             label: '有线链路',
             icon: 'wire',
             column:[ 
@@ -478,37 +519,7 @@
               }
             ]
           },
-          // {
-          //   label: '链路模型',
-          //   icon: 'wire',
-          //   column:[ 
-          //             // 链路表头
-          //             { prop:"label",label:"名称" },
-          //             { prop:"type",label:"类型名" },
-          //             { prop: 'channeltype', label: '协议类型' },
-          //             { prop: 'delay', label: '时延' },
-          //          ],
-          //   children: [
-          //     {
-   
-          //       label: 'link0',
-          //       type: '链路模型',
-          //       channeltype:'pointTopoint',
-          //       delay:'2ms',
-          //       ID:'89ss47',
-          //       icon: 'el-icon-share'
-          //     },
-          //     {
-  
-          //       label: 'link1',
-          //       type: '链路模型',
-          //       channeltype:'pointTopoint',
-          //       delay:'2ms',
-          //       ID:'7777qw',
-          //       icon: 'el-icon-share'
-          //     }
-          //   ]
-          // },
+          
         ],
         itemname:'',
         tableData:[],
@@ -522,6 +533,7 @@
         form: {
           type:'',
           label: '',
+          icon:'',
           // application:'',
           // net_device:'',
           potocal:'',
@@ -535,6 +547,7 @@
           channeltype:'',
           // ID:'',
           delay:'',
+          icon:'',
         },
         appchoose:['serverApps','node','clienApps'],
         netchoose:['Udp','Tcp'],
@@ -544,7 +557,36 @@
         isVisible:false,//ID
         linkVisible:false,
         receivedata:null,
-        BGPvisible:false
+        BGPvisible:false,
+        linkicon:[
+          {
+            cn:'有线链路',
+            en:'el-icon-share',
+          },
+          {
+            cn:'无线链路',
+            en:'el-icon-data-analysis',
+          },
+        ],
+        nodeicon:[
+          {
+            cn:'路由器',
+            en:'el-icon-bangzhu',
+          },
+          {
+            cn:'交换机',
+            en:'el-icon-s-tools',
+          },
+          {
+            cn:'移动电话',
+            en:'el-icon-mobile-phone',
+          },
+          {
+            cn:'无人机',
+            en:'el-icon-s-platform',
+          },
+        ],
+        firstmenu:['节点模型','链路模型'],
       };
     },
     watch: {
@@ -588,7 +630,7 @@
           if (this.modalType === 0) {
             // let id=Math.random().toString(36).substring(3, 9);
             // test.ID=id;
-            test.icon='el-icon-s-platform'
+            // test.icon='el-icon-s-platform'
             test.name= this.menuData[index].children.length
             this.menuData[index].children.push(test)}
   
@@ -722,7 +764,7 @@
           if (this.modalType === 0) {
             // let id=Math.random().toString(36).substring(3, 9);
             // test.ID=id;
-            test.icon='el-icon-share'
+            // test.icon='el-icon-share'
             this.menuData[index].children.push(test)}
           else{
               for(let i=0;i<this.menuData[index].children.length;i++){
@@ -750,13 +792,13 @@
       submitFirst(){
         // console.log(this.userForm);
         switch(this.userForm.type){
-          // case '节点模型':{this.handleAdd();break;}
-          // case '链路模型':{this.linkAdd();break;}
-          case '路由器':{this.handleAdd();break;}
-          case '交换机':{this.handleAdd();break;}
-          case '移动终端':{this.handleAdd();break;}
-          case '有线链路':{this.linkAdd();break;}
-          case '无线链路':{this.linkAdd();break;}
+          case '节点模型':{this.handleAdd();break;}
+          case '链路模型':{this.linkAdd();break;}
+          // case '路由器':{this.handleAdd();break;}
+          // case '交换机':{this.handleAdd();break;}
+          // case '移动终端':{this.handleAdd();break;}
+          // case '有线链路':{this.linkAdd();break;}
+          // case '无线链路':{this.linkAdd();break;}
         }
         this.closeFirst()
       },

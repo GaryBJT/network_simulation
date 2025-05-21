@@ -2,8 +2,8 @@ import axios from "axios";
 import qs from "querystring"
 
 const http=axios.create({
-    // baseURL: 'http://172.19.166.147:3000',
-    timeout: 10000,
+    // baseURL: 'http://10.193.99.141:5000',
+    // timeout: 10000,
     
 })
 http.defaults.headers.post['Content-Type'] = 'application/json';
@@ -50,6 +50,7 @@ http.interceptors.response.use(
     Promise.resolve(response) :
     Promise.reject(response),
     error =>{
+    console.log(error)
     const { response } = error;
     errorHandle(response.status,response.info)
     }

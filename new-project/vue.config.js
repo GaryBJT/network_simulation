@@ -14,8 +14,8 @@ module.exports = defineConfig({
       //   // webpack 
 
       // }
-      '/api': {
-        target: 'http://localhost:3000',
+      '/simulate': {
+        target: 'http://10.193.99.141:5000',
         changeOrigin: true,
       }
     }

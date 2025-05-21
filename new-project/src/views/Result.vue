@@ -53,8 +53,8 @@
           empty-text=" "
           >
           <el-table-column
-            label="丢包率"
-            prop="丢包率"
+            label="丢包率(%)"
+            prop="丢包率(%)"
             v-if="headervisible"
           >
         </el-table-column>
@@ -96,7 +96,7 @@ export default {
       headervisible:false,
       myecharts:null,
       displayPicture:false,
-      
+      test:null,
     }
   },
 
@@ -116,8 +116,9 @@ export default {
     //   }
 
     // this.resultdata.push(JSON.parse(sessionStorage.getItem('result')))
+    this.test=JSON.parse(sessionStorage.getItem('result'))
     const temp={
-      '丢包率':0,
+      '丢包率(%)':0,
       "平均吞吐量(Mbps)":52.70,
       "平均抖动(ms)":0,
       "平均时延(ms)":2.43,
@@ -182,7 +183,8 @@ export default {
       
     },
     showtuntu(){
-
+      this.displayPicture=true
+      this.headervisible=false
       const option = {
         title: {
           text: '吞吐量'
@@ -213,6 +215,8 @@ export default {
       option && this.myecharts.setOption(option);
     },
     showdelay(){
+      this.displayPicture=true
+      this.headervisible=false
       const option = {
         title: {
           text: '时延'
@@ -245,6 +249,8 @@ export default {
       option && this.myecharts.setOption(option);
     },
     showfliter(){
+      this.displayPicture=true
+      this.headervisible=false
       const option = {
         title: {
           text: '抖动'

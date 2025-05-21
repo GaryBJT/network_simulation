@@ -165,7 +165,7 @@
               <el-form-item prop="application" label="应用程序">
                 <!-- <el-input  v-model="form.application"></el-input> -->
                 <el-select v-model="nodeform.application" id="application">
-                  <el-option v-for="item in appchoose" :label="item" :value="item"></el-option> 
+                  <el-option v-for="(item,index) in appchoose" :label="item" :value="item" :key="index"></el-option> 
                 </el-select>
               </el-form-item>
               <!-- <el-form-item label="网络设备">
@@ -173,7 +173,7 @@
               </el-form-item> -->
               <el-form-item prop="potocal" label="协议栈">
                 <el-select v-model="nodeform.potocal" id="potocal">
-                  <el-option v-for="item in netchoose" :label="item" :value="item"></el-option> 
+                  <el-option v-for="(item,index) in netchoose" :label="item" :value="item" :key="index"></el-option> 
                 </el-select>
               </el-form-item>
               <el-form-item prop="DataRate" label="数据传输速率">
@@ -205,7 +205,7 @@
           </el-form-item>
           <el-form-item prop="channeltype" label="协议类型">
             <el-select v-model="linkform.channeltype" id="channeltype">
-              <el-option v-for="item in linkchoose" :label="item" :value="item"></el-option> 
+              <el-option v-for="(item,index) in linkchoose" :label="item" :value="item" :key="index"></el-option> 
             </el-select>
           </el-form-item>
           <el-form-item prop="delay" label="时延">
@@ -236,7 +236,8 @@ export default {
       menuData: [
       ],
       nodeData:[ 
-      {
+      {     
+            type: '节点模型',
             label: '交换机',
             icon: 'exchange2',
             column:[ 
@@ -254,7 +255,7 @@ export default {
                 potocal:'Udp',
                 DataRate:'5Mbps',
                 // ID:'124s8s',
-                icon: 'el-icon-s-platform',
+                icon: 'el-icon-s-tools',
                 name:0
               },
               {
@@ -264,12 +265,43 @@ export default {
                 potocal:'Udp',
                 DataRate:'5Mbps',
                 // ID:'1wed8s',
-                icon: 'el-icon-s-platform',
+                icon: 'el-icon-s-tools',
                 name:1
-              }
+              },
+              {
+                type: '交换机',
+                label: '锐捷网络RG-NBS3100-24GT4SFP',
+                application:'clienApps',
+                potocal:'Udp',
+                DataRate:'5Mbps',
+                // ID:'1wed8s',
+                icon: 'el-icon-s-tools',
+                name:2
+              },
+              {
+                type: '交换机',
+                label: '华为S2408',
+                application:'serverApps',
+                potocal:'Udp',
+                DataRate:'5Mbps',
+                // ID:'1wed8s',
+                icon: 'el-icon-s-tools',
+                name:3
+              },
+              {
+                type: '交换机',
+                label: 'ZXR10 8902E',
+                application:'clienApps',
+                potocal:'Udp',
+                DataRate:'5Mbps',
+                // ID:'1wed8s',
+                icon: 'el-icon-s-tools',
+                name:4
+              },
             ]
           },
           {
+            type: '节点模型',
             label: '路由器',
             icon: 'router',
             column:[ 
@@ -287,7 +319,7 @@ export default {
                 potocal:'Udp',
                 DataRate:'5Mbps',
                 // ID:'124s8s',
-                icon: 'el-icon-s-platform',
+                icon: 'el-icon-bangzhu',
                 name:0
               },
               {
@@ -297,12 +329,43 @@ export default {
                 potocal:'Udp',
                 DataRate:'5Mbps',
                 // ID:'1wed8s',
-                icon: 'el-icon-s-platform',
+                icon: 'el-icon-bangzhu',
                 name:1
-              }
+              },
+              {
+                type: '路由器',
+                label: '海康威视DS-3WR12-E',
+                application:'clienApps',
+                potocal:'Udp',
+                DataRate:'5Mbps',
+                // ID:'1wed8s',
+                icon: 'el-icon-bangzhu',
+                name:2
+              },
+              {
+                type: '路由器',
+                label: '华为AR6121EC-S',
+                application:'clienApps',
+                potocal:'Udp',
+                DataRate:'5Mbps',
+                // ID:'1wed8s',
+                icon: 'el-icon-bangzhu',
+                name:3
+              },
+              {
+                type: '路由器',
+                label: 'H3C ER5200G3',
+                application:'clienApps',
+                potocal:'Udp',
+                DataRate:'5Mbps',
+                // ID:'1wed8s',
+                icon: 'el-icon-bangzhu',
+                name:4
+              },
             ]
           },
           {
+            type: '节点模型',
             label: '移动终端',
             icon: 'move',
             column:[ 
@@ -330,7 +393,7 @@ export default {
                 potocal:'Udp',
                 DataRate:'5Mbps',
                 // ID:'1wed8s',
-                icon: 'el-icon-s-platform',
+                icon: 'el-icon-mobile-phone',
                 name:1
               }
             ]
@@ -338,7 +401,8 @@ export default {
         ],
       tableData: [],
       linkData:[
-      {
+      {     
+            type: '链路模型',
             label: '无线链路',
             icon: 'stick',
             column:[ 
@@ -356,7 +420,7 @@ export default {
                 channeltype:'pointTopoint',
                 delay:'2ms',
                 // ID:'89ss47'
-                icon: 'el-icon-share'
+                icon: 'el-icon-data-analysis'
               },
               {
   
@@ -365,11 +429,12 @@ export default {
                 channeltype:'pointTopoint',
                 delay:'2ms',
                 // ID:'7777qw',
-                icon: 'el-icon-share'
+                icon: 'el-icon-data-analysis'
               }
             ]
           },
           {
+            type: '链路模型',
             label: '有线链路',
             icon: 'wire',
             column:[ 
@@ -601,30 +666,189 @@ export default {
 
     // 运行
     run(){
-      // console.log(JSON.stringify(this.menuData));
-      const node=this.menuData[0].children
-      const link=this.tableData[0].children
+      // // console.log(JSON.stringify(this.menuData));
+      // const node=this.menuData[0].children
+      // const link=this.tableData[0].children
 
-      let newarray=[]
-      for(let i=0;i<node.length;i++){
-        newarray.push(node[i])
-      }
-      for(let i=0;i<link.length;i++){
-        newarray.push(link[i])
-      }
+      // let newarray=[]
+      // for(let i=0;i<node.length;i++){
+      //   newarray.push(node[i])
+      // }
+      // for(let i=0;i<link.length;i++){
+      //   newarray.push(link[i])
+      // }
       
-      const newObject={
-        data:newarray
-      }
-      const mydata=JSON.stringify(newObject)
+      // const newObject={
+      //   data:newarray
+      // }
+      // const mydata=JSON.stringify(newObject)
       // console.log(mydata);
-      
+
+      const mydata=[
+    {
+        "type": "节点模型",
+        "label": "node0",
+        "application": "",
+        "identity":"serverApps",
+        "protocal": "Udp",
+        "DataRate": "5Mbps",
+        "packetsize":512,
+        "icon": "el-icon-s-data",
+        "name":0,
+        "mobilitymodel":"ConstantPositionMobilityModel",
+        "position":[1,1,0]        
+    },
+    {
+        "type": "节点模型",
+        "label": "node1",
+        "application": "",
+        "identity":"",
+        "protocal": "Udp",
+        "DataRate": "5Mbps",
+        "packetsize":512,
+        "icon": "el-icon-s-platform",
+        "name":1,
+        "mobilitymodel":"RandomDiscPositionAllocator",
+        "X":"0.0",
+        "Y":"0.0",
+        "min":0,
+        "max":10
+    }, 
+    {
+        "type": "节点模型",
+        "label": "node2",
+        "application": "",
+        "identity":"Apnode",
+        "protocal": "Udp",
+        "DataRate": "5Mbps",
+        "packetsize":512,
+        "icon": "el-icon-s-platform",
+        "name":2,
+        "mobilitymodel":"RandomWalk2dMobilityModel",
+        "time":"1s",
+        "x_min":0,
+        "x_max":100,
+        "y_min":0,
+        "y_max":100,
+        "speed":2.0,
+        "position":[0,0,0]
+    }, 
+    {
+        "type": "节点模型",
+        "label": "node3",
+        "application": "",
+        "identity":"",
+        "protocal": "Udp",
+        "DataRate": "5Mbps",
+        "packetsize":512,
+        "icon": "el-icon-s-platform",
+        "name":3,
+        "mobilitymodel":"ConstantPositionMobilityModel",
+        "position":[2,2,0]
+    }, 
+    {
+        "type": "节点模型",
+        "label": "stanode4",
+        "application": "",
+        "identity":"",
+        "protocal": "Udp",
+        "DataRate": "10Mbps",
+        "packetsize":512,
+        "icon": "el-icon-s-platform",
+        "name":4,
+        "mobilitymodel":"ConstantPositionMobilityModel",
+        "position":[2,3,0]
+    }, 
+    {
+        "type": "节点模型",
+        "label": "stanode5",
+        "application": "",
+        "identity":"",
+        "protocal": "Udp",
+        "DataRate": "5Mbps",
+        "packetsize":512,
+        "icon": "el-icon-s-platform",
+        "name":5,
+        "mobilitymodel":"ConstantPositionMobilityModel",
+        "position":[3,3,0]
+    }, 
+    {
+        "type": "节点模型",
+        "label": "sta",
+        "application": "",
+        "identity":"clientApps",
+        "protocal": "Udp",
+        "DataRate": "5Mbps",
+        "packetsize":512,
+        "icon": "el-icon-s-platform",
+        "name":6,
+        "mobilitymodel":"ConstantVelocityMobilityModel",
+        "velocity":[10.0,0,0,0,0],
+        "position":[1,1,1]  
+    }, 
+    {
+        "type": "节点模型",
+        "label": "sta",
+        "application": "",
+        "identity":"",
+        "protocal": "Udp",
+        "DataRate": "5Mbps",
+        "packetsize":512,
+        "icon": "el-icon-s-platform",
+        "name":7,
+        "mobilitymodel":"ConstantPositionMobilityModel",
+        "position":[3,3,0]
+    }, 
+    {
+        "label": "link0",
+        "type": "链路模型",
+        "channeltype": "pointTopoint",
+        "datarate":"10Mbps",
+        "delay": "0.01ms",
+        "icon": "el-icon-share",
+        "connection":[0,1],
+        "ipv4address":"10.1.1.0"
+    },
+    {
+        "label": "link1",
+        "type": "链路模型",
+        "channeltype": "csma",
+        "datarate":"10Mbps",
+        "delay": "0.01ms",
+        "icon": "el-icon-share",
+        "connection":[1,2,3],
+        "ipv4address":"10.1.2.0"
+    },
+    {
+        "label": "link2",
+        "type": "链路模型",
+        "channeltype": "wifi",
+        "ssid":"wifi",
+        "icon": "el-icon-share",
+        "connection":[2,4,5],
+        "ipv4address":"10.1.3.0"
+    },
+    {
+        "label": "link3",
+        "type": "链路模型",
+        "channeltype": "adhocwifi",
+        "ssid":"adhocwifi",
+        "icon": "el-icon-share",
+        "connection":[5,6,7],
+        "ipv4address":"10.1.4.0"
+    }
+         ]
       //发送请求
       pastData(mydata).then((response)=>{
-        console.log(response.data);
+        // console.log(response.data);
         const data=response.data
         sessionStorage.setItem('result',JSON.stringify(data))
-        this.$router.push('/result')
+        // 跳转到新开页面
+         let newUrl = this.$router.resolve({
+          path: "/result"
+        });
+        window.open(newUrl.href, "_blank");
+        // this.$router.push('/result')
       }).catch(error=>{
         console.log(error);
       })
